@@ -13,7 +13,6 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -35,16 +34,13 @@ jobs:
           name: coverage-report
           path: coverage/lcov-report
 
-
   deploy:
     needs: test
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-
     outputs:
       page_url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -62,13 +58,11 @@ jobs:
         uses: actions/deploy-pages@v4
 
       - name: Show deployment URL
-        run: echo "Your GitHub Pages URL: ${{ steps.deployment.outputs.page_url }}"
-
+        run: echo 'Your GitHub Pages URL: ${{ steps.deployment.outputs.page_url }}'
 
   monitor:
     needs: deploy
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -92,11 +86,9 @@ jobs:
           name: site-metrics
           path: metrics.json
 
-
   loadtest:
     needs: deploy
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
