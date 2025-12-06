@@ -1,0 +1,118 @@
+name: Full CI/CD Pipeline
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  # ------------------------------------
+  # CI: Test + Coverage
+  # ------------------------------------
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests + coverage
+        run: npm test
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/lcov-report
+
+  # ------------------------------------
+  # CD: Deploy static site
+  # ------------------------------------
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # ------------------------------------
+  # Monitoring (Python)
+  # ------------------------------------
+  monitor:
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Python deps
+        run: pip install -r requirements.txt
+
+      - name: Run monitoring script
+        run: python monitor.py
+
+      - name: Upload monitoring metrics
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-metrics
+          path: metrics.json
+
+  # ------------------------------------
+  # Load Test (k6)
+  # ------------------------------------
+  loadtest:
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          sudo apt update
+          sudo apt install -y k6
+
+      - name: Run Load Test
+        env:
+          SITE_URL: https://<YOUR_GITHUB_USERNAME>.github.io/<YOUR_REPO>
+        run: k6 run loadtest.js
+
+      - name: Upload load test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: loadtest-results
+          path: .
