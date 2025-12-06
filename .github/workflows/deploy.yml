@@ -10,9 +10,7 @@ permissions:
   id-token: write
 
 jobs:
-  # ------------------------------------
-  # CI: Test + Coverage
-  # ------------------------------------
+
   test:
     runs-on: ubuntu-latest
 
@@ -37,9 +35,7 @@ jobs:
           name: coverage-report
           path: coverage/lcov-report
 
-  # ------------------------------------
-  # CD: Deploy static site
-  # ------------------------------------
+
   deploy:
     needs: test
     runs-on: ubuntu-latest
@@ -68,9 +64,7 @@ jobs:
       - name: Show deployment URL
         run: echo "Your GitHub Pages URL: ${{ steps.deployment.outputs.page_url }}"
 
-  # ------------------------------------
-  # Monitoring (Python)
-  # ------------------------------------
+
   monitor:
     needs: deploy
     runs-on: ubuntu-latest
@@ -98,9 +92,7 @@ jobs:
           name: site-metrics
           path: metrics.json
 
-  # ------------------------------------
-  # Load Test (k6)
-  # ------------------------------------
+
   loadtest:
     needs: deploy
     runs-on: ubuntu-latest
