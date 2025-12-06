@@ -12,7 +12,7 @@ This repository demonstrates a complete **multi-language CI/CD pipeline** using 
 ---
 
 ##  Project Structure
-
+```
 my-cicd-demo/
 ├── index.html
 ├── sum.js
@@ -22,7 +22,7 @@ my-cicd-demo/
 ├── package.json
 ├── requirements.txt
 └── .github/workflows/deploy.yml
-
+```
 
 ---
 
@@ -91,3 +91,4 @@ A lightweight load test runs automatically:
 - Jest (Tests + Coverage)
 - Python (Monitoring)
 - k6 (Load Testing)
+
