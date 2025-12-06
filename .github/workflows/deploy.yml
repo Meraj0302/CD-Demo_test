@@ -58,7 +58,9 @@ jobs:
         uses: actions/deploy-pages@v4
 
       - name: Show deployment URL
-        run: echo 'Your GitHub Pages URL: ${{ steps.deployment.outputs.page_url }}'
+        run: |
+          echo 'Your GitHub Pages URL: ${{ steps.deployment.outputs.page_url }}'
+  
 
   monitor:
     needs: deploy
