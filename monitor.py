@@ -1,9 +1,10 @@
 import requests
+import os
 import time
 import json
 from datetime import datetime
 
-url = "https://<YOUR_GITHUB_USERNAME>.github.io/<YOUR_REPO>"
+url = os.getenv("SITE_URL")
 
 start = time.time()
 response = requests.get(url)

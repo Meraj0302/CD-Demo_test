@@ -97,8 +97,7 @@ jobs:
 
       - name: Install k6
         run: |
-          sudo apt update
-          sudo apt install -y k6
+          sudo snap install k6
 
       - name: Run Load Test
         env:
@@ -110,3 +109,4 @@ jobs:
         with:
           name: loadtest-results
           path: .
+
