@@ -46,6 +46,9 @@ jobs:
     environment:
       name: github-pages
 
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -63,8 +66,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
       - name: Show deployment URL
-        run:
-          echo "Your GitHub Pages URL: ${{ steps.deployment.outputs.page_url }}"
+        run: echo "🌐 Your GitHub Pages URL: ${{ steps.deployment.outputs.page_url }}"
 
   # ------------------------------------
   # Monitoring (Python)
@@ -80,12 +82,14 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
       - name: Run monitoring script
+        env:
+          SITE_URL: ${{ needs.deploy.outputs.page_url }}
         run: python monitor.py
 
       - name: Upload monitoring metrics
@@ -112,7 +116,7 @@ jobs:
 
       - name: Run Load Test
         env:
-          SITE_URL: https://<YOUR_GITHUB_USERNAME>.github.io/<YOUR_REPO>
+          SITE_URL: ${{ needs.deploy.outputs.page_url }}
         run: k6 run loadtest.js
 
       - name: Upload load test results
