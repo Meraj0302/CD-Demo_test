@@ -2,12 +2,12 @@
 
 This repository demonstrates a complete **multi-language CI/CD pipeline** using **GitHub Actions**, including:
 
-- ✔ JavaScript Unit Tests (Jest)
-- ✔ Code Coverage Reporting
-- ✔ Static Website Deployment to GitHub Pages
-- ✔ Python-based Monitoring Script
-- ✔ k6 Load Testing
-- ✔ Student Participation (Real-Time Traffic Observation)
+-  JavaScript Unit Tests (Jest)
+-  Code Coverage Reporting
+-  Static Website Deployment to GitHub Pages
+-  Python-based Monitoring Script
+-  k6 Load Testing
+-  Student Participation (Real-Time Traffic Observation)
 
 ---
 
@@ -65,10 +65,7 @@ After deployment, a Python script checks:
 - Content size
 - Timestamp
 
-Results output to:
-
-metrics.json
-
+Results output to: metrics.json
 
 You can download the artifact and see metrics.
 
@@ -84,11 +81,12 @@ A lightweight load test runs automatically:
 
 ---
 
-## 🛠 Tech Used
+##  Tech Used
 
 - GitHub Actions
 - GitHub Pages
 - Jest (Tests + Coverage)
 - Python (Monitoring)
 - k6 (Load Testing)
+
 
